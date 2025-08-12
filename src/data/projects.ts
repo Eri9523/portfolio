@@ -13,6 +13,19 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    title: "AI Hacker - Automated Pentesting System",
+    titleEs: "IA Hacker - Sistema de Pentesting Automatizado",
+    description:
+      "Collaborative AI-powered penetration testing system that analyzes domains, identifies vulnerabilities, and automatically exploits security weaknesses. Performs comprehensive security assessments with automated exploit execution.",
+    descriptionEs:
+      "Sistema colaborativo de pentesting impulsado por IA que analiza dominios, identifica vulnerabilidades y explota automáticamente debilidades de seguridad. Realiza evaluaciones de seguridad completas con ejecución automatizada de exploits.",
+    tags: ["AI", "Pentesting", "Cybersecurity", "Automation", "Python", "Collaboration"],
+    href: "",
+    repo: "",
+    featured: true,
+    private: true,
+  },
+  {
     title: "Self-Managed Web3 Community",
     titleEs: "Comunidad Web3 autogestionada",
     description:
