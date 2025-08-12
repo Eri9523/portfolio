@@ -13,19 +13,6 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "AI Hacker - Automated Pentesting System",
-    titleEs: "IA Hacker - Sistema de Pentesting Automatizado",
-    description:
-      "Collaborative AI-powered penetration testing system that analyzes domains, identifies vulnerabilities, and automatically exploits security weaknesses. Performs comprehensive security assessments with automated exploit execution.",
-    descriptionEs:
-      "Sistema colaborativo de pentesting impulsado por IA que analiza dominios, identifica vulnerabilidades y explota automáticamente debilidades de seguridad. Realiza evaluaciones de seguridad completas con ejecución automatizada de exploits.",
-    tags: ["AI", "Pentesting", "Cybersecurity", "Automation", "Python", "Collaboration"],
-    href: "",
-    repo: "",
-    featured: true,
-    private: true,
-  },
-  {
     title: "Self-Managed Web3 Community",
     titleEs: "Comunidad Web3 autogestionada",
     description:
@@ -49,7 +36,20 @@ export const projects: Project[] = [
     repo: "",
     featured: true,
     private: true,
-  }, 
+  },
+  {
+    title: "AI Hacker - Automated Pentesting System",
+    titleEs: "IA Hacker - Sistema de Pentesting Automatizado",
+    description:
+      "Collaborative AI-powered penetration testing system that analyzes domains, identifies vulnerabilities, and automatically exploits security weaknesses. Performs comprehensive security assessments with automated exploit execution.",
+    descriptionEs:
+      "Sistema colaborativo de pentesting impulsado por IA que analiza dominios, identifica vulnerabilidades y explota automáticamente debilidades de seguridad. Realiza evaluaciones de seguridad completas con ejecución automatizada de exploits.",
+    tags: ["AI", "Pentesting", "Cybersecurity", "Automation", "Python", "Collaboration"],
+    href: "",
+    repo: "",
+    featured: true,
+    private: true,
+  },
   {
     title: "Automated Marketplace Bots",
     titleEs: "Bots automatizados para marketplaces",
@@ -81,7 +81,7 @@ export const projects: Project[] = [
     "Collaborative Web3 raffle platform that connects crypto wallets, automates ticket purchases, selects winners, logs results to Google Drive via API, and distributes prizes. Includes Discord integration to announce winners in real time.",
   descriptionEs:
     "Plataforma colaborativa de rifas Web3 que conecta monederos, automatiza compras de tickets, selecciona ganadores, registra resultados en Google Drive vía API y distribuye premios. Con integración de Discord para anunciar ganadores en tiempo real.",
-  tags: ["Web3", "React", "Python", "Google Drive API", "Discord"],
+  tags: ["Web3", "React", "Python", "Google Drive API", "Discord", "Collaboration"],
   href: "https://roninkaeru.com/",
   repo: "",
   featured: true,
@@ -112,13 +112,13 @@ export const projects: Project[] = [
     featured: true
   },
   {
-    title: "NFT Smart Contract Fix & Redeploy",
-    titleEs: "Reparación y redeploy de smart contract NFT",
+    title: "NFT Smart Contract Repair & Redeployment",
+    titleEs: "Reparación y Despliegue de Smart Contract NFT",
     description:
-      "Provided technical assistance to fix and redeploy a malfunctioning NFT collection smart contract, ensuring proper functionality and successful on-chain deployment.",
+      "Technical consultation and implementation services for fixing critical vulnerabilities in a malfunctioning NFT collection smart contract, followed by secure redeployment to ensure optimal functionality and on-chain security compliance.",
     descriptionEs:
-      "Asistencia técnica para reparar y volver a desplegar el smart contract de una colección NFT con fallos, asegurando su correcto funcionamiento y despliegue on‑chain.",
-    tags: ["Web3", "Smart Contracts", "Solidity", "Ethereum"],
+      "Servicios de consultoría técnica e implementación para reparar vulnerabilidades críticas en un smart contract de colección NFT con fallos, seguido de un despliegue seguro para garantizar funcionalidad óptima y cumplimiento de seguridad on-chain.",
+    tags: ["Web3", "Smart Contracts", "Solidity", "Ethereum", "Security"],
     href: "",
     repo: "",
     featured: false
