@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getEntryBySlug, getCollection } from 'astro:content';
+import AnimatedGradient from '../../components/AnimatedGradient.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('writeups');
@@ -17,8 +18,9 @@ const { data } = entry;
 ---
 
 <Layout title={data.title} description={data.summary} image={data.cover}>
+  <AnimatedGradient />
   <main class="mx-auto max-w-3xl p-6">
-    <a class="text-red-600 hover:underline dark:text-red-400" href="/writeups/">← Back</a>
+    <a class="text-red-600 hover:underline dark:text-red-400" href="/writeups/" data-i18n="writeup.back">← Back</a>
     <h1 class="mt-2 border-b border-red-200 pb-2 text-3xl font-bold dark:border-red-900/50">{data.title}</h1>
     <div class="text-sm text-neutral-500 mb-6">{data.date.toISOString().slice(0, 10)}</div>
     <article class="prose dark:prose-invert max-w-none">

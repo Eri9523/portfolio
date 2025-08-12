@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CertificateItem from "../components/CertificateItem.astro";
+import { certificates } from "../data/certificates";
+---
+
+<Layout title="Certificates — Eri" description="Professional certifications and credentials.">
+  <main class="mx-auto max-w-4xl px-6 py-16">
+    <header class="mb-10">
+      <h1 class="text-3xl font-bold tracking-tight" data-i18n="certificates.title">Certificates</h1>
+      <p class="mt-2 text-neutral-600 dark:text-neutral-300" data-i18n="certificates.subtitle">Verified certifications and credentials.</p>
+    </header>
+
+    {certificates.length === 0 ? (
+      <p class="text-neutral-600 dark:text-neutral-300" data-i18n="certificates.none">No certificates yet.</p>
+    ) : (
+      <ul class="grid gap-3 sm:grid-cols-2">
+        {certificates.map((c) => (
+          <CertificateItem {...c} />
+        ))}
+      </ul>
+    )}
+  </main>
+</Layout> 

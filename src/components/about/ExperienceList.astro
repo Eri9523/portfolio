@@ -1,0 +1,20 @@
+---
+export interface Props {
+  title?: string;
+  items: string[];
+}
+const { title = 'Experience', items } = Astro.props as Props;
+const parsed = items.map((item) => {
+  const [en, es] = item.split('|||');
+  return { en: en || item, es: es || en || item };
+});
+---
+
+<div class="rounded-lg border border-neutral-400 bg-white/50 p-4 shadow-sm backdrop-blur dark:border-neutral-800 dark:bg-neutral-900/50">
+  <h2 class="text-sm font-semibold text-neutral-900 dark:text-white" data-i18n-content-en={title} data-i18n-content-es={title === 'Experience' ? 'Experiencia' : title}>{title}</h2>
+  <ul class="mt-2 list-disc pl-5 text-sm text-neutral-700 dark:text-neutral-300">
+    {parsed.map((item) => (
+      <li class="text-justify" data-i18n-content-en={item.en} data-i18n-content-es={item.es}>{item.en}</li>
+    ))}
+  </ul>
+</div> 

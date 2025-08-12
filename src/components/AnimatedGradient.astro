@@ -1,0 +1,46 @@
+<div class="pointer-events-none fixed inset-0 -z-10 opacity-45">
+  <span class="blob blob-1"></span>
+  <span class="blob blob-2"></span>
+  <span class="blob blob-3"></span>
+</div>
+
+<style>
+  .blob {
+    position: absolute;
+    width: 45vmax;
+    height: 45vmax;
+    border-radius: 50%;
+    filter: blur(60px) saturate(120%);
+    opacity: 0.6;
+    will-change: transform;
+    mix-blend-mode: plus-lighter;
+    background: radial-gradient(circle at 50% 50%, rgba(239,68,68,0.35), rgba(239,68,68,0.1) 60%, rgba(239,68,68,0) 70%);
+  }
+
+  .blob-1 { left: -10%; top: -10%; animation: move1 28s ease-in-out infinite alternate; }
+  .blob-2 { right: -15%; top: 20%; animation: move2 32s ease-in-out infinite alternate; }
+  .blob-3 { left: 20%; bottom: -15%; animation: move3 36s ease-in-out infinite alternate; }
+
+  @keyframes move1 {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(10%, 8%, 0) scale(1.05); }
+    100% { transform: translate3d(18%, 14%, 0) scale(1.12); }
+  }
+  @keyframes move2 {
+    0% { transform: translate3d(0, 0, 0) scale(1.05); }
+    50% { transform: translate3d(-8%, -6%, 0) scale(1); }
+    100% { transform: translate3d(-16%, -12%, 0) scale(0.95); }
+  }
+  @keyframes move3 {
+    0% { transform: translate3d(0, 0, 0) scale(0.95); }
+    50% { transform: translate3d(-6%, 10%, 0) scale(1.05); }
+    100% { transform: translate3d(-12%, 18%, 0) scale(1.1); }
+  }
+
+  /* Dark mode tweaks */
+  :global(.dark) .blob {
+    background: radial-gradient(circle at 50% 50%, rgba(220,38,38,0.40), rgba(136,19,55,0.18) 60%, rgba(239,68,68,0) 70%);
+    filter: blur(70px) saturate(110%);
+    opacity: 0.55;
+  }
+</style> 

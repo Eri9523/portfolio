@@ -1,0 +1,2 @@
+export const nowTextEn: string = 'Currently expanding my experience in offensive security, vuln assessment, and CI/CD automation. I enjoy breaking and building in equal parts.';
+export const nowTextEs: string = 'Actualmente ampliando mi experiencia en seguridad ofensiva, evaluación de vulnerabilidades y automatización de CI/CD. Disfruto rompiendo y construyendo a partes iguales.'; 

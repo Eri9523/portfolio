@@ -1,0 +1,13 @@
+---
+export interface Props {
+  text: string;
+}
+const { text } = Astro.props as Props;
+const paragraphs = text.split(/\n\n+/).filter(Boolean);
+---
+
+<div class="mt-4 space-y-3">
+  {paragraphs.map((para) => (
+    <p class="max-w-3xl text-neutral-700 dark:text-neutral-300">{para}</p>
+  ))}
+</div> 

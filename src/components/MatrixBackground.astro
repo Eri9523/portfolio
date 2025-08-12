@@ -1,7 +1,7 @@
 ---
 ---
 
-<canvas id="matrix-canvas" class="pointer-events-none fixed inset-0 -z-10 block h-dvh w-dvw"></canvas>
+<canvas id="matrix-canvas" class="pointer-events-none fixed inset-0 -z-10 block h-dvh w-dvw" style="filter: blur(0.8px); opacity: 0.85;"></canvas>
 
 <script is:inline>
   const canvas = document.getElementById('matrix-canvas');
@@ -11,36 +11,91 @@
   let fontSize = 14;
   let columns = 0;
   let drops = [];
+  const horizontalSpacing = 1.6; // increase to spread columns further apart
+  let speed = 0.35; // smaller is slower
+
+  // Theme-aware colors
+  let fadeColor = 'rgba(0, 0, 0, 0.07)';
+  let charColor = 'rgba(220, 38, 38, 0.9)'; // red-600
+
+  function isDark() {
+    return document.documentElement.classList.contains('dark');
+  }
+  function updateThemeColors() {
+    if (isDark()) {
+      fadeColor = 'rgba(0, 0, 0, 0.07)';
+      charColor = 'rgba(220, 38, 38, 0.9)'; // red-600
+    } else {
+      // Light mode: fade towards a light gray to add contrast, and tone down characters a bit
+      fadeColor = 'rgba(230, 230, 230, 0.12)'; // stronger gray wash for darker light mode
+      charColor = 'rgba(185, 28, 28, 0.68)'; // slightly less intense
+    }
+  }
+  updateThemeColors();
+
+  // Respect reduced motion preferences
+  function updateMotionPreference() {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)')?.matches;
+    speed = prefersReduced ? 0.2 : 0.35;
+  }
+  updateMotionPreference();
+  window.matchMedia('(prefers-reduced-motion: reduce)')?.addEventListener('change', updateMotionPreference);
+
+  // Observe theme toggles (class changes on <html>)
+  const themeObserver = new MutationObserver(() => updateThemeColors());
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
   function resize() {
     const dpr = window.devicePixelRatio || 1;
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
+
     fontSize = Math.max(12, Math.floor(window.innerWidth / 80));
-    columns = Math.ceil(window.innerWidth / fontSize);
-    drops = new Array(columns).fill(1 + Math.random() * 20);
+    columns = Math.ceil(window.innerWidth / (fontSize * horizontalSpacing));
+    drops = new Array(columns)
+      // randomize starting row so the screen isn't empty at the bottom on first draw
+      .fill(0)
+      .map(() => Math.random() * (window.innerHeight / fontSize));
+
     ctx.font = `${fontSize}px monospace`;
+
+    // Warm up several steps so the effect covers the whole screen immediately
+    warmup();
   }
 
-  function draw() {
+  function step() {
     // fade the canvas
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.07)';
+    ctx.fillStyle = fadeColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // draw red characters
     for (let i = 0; i < drops.length; i++) {
       const text = chars[Math.floor(Math.random() * chars.length)];
-      ctx.fillStyle = 'rgba(220, 38, 38, 0.9)'; // red-600
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+      ctx.fillStyle = charColor;
+      const x = Math.floor(i * fontSize * horizontalSpacing);
+      const y = Math.floor(drops[i] * fontSize);
+      ctx.fillText(text, x, y);
 
       // reset drop
-      if (drops[i] * fontSize > canvas.height || Math.random() > 0.975) {
+      if (y > window.innerHeight || Math.random() > 0.975) {
         drops[i] = 0;
       }
-      drops[i]++;
+      drops[i] += speed;
     }
+  }
+
+  function draw() {
+    step();
     requestAnimationFrame(draw);
+  }
+
+  function warmup() {
+    const frames = Math.ceil(window.innerHeight / fontSize / Math.max(speed, 0.1));
+    for (let k = 0; k < frames; k++) {
+      step();
+    }
   }
 
   resize();

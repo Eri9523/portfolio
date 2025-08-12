@@ -15,11 +15,33 @@
   --color-brand-foreground: white;
 }
 
-/* Optional subtle background in dark mode */
+/* Optional subtle backgrounds */
 @layer utilities {
   .bg-grid-dark {
     background-image: radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
     background-size: 16px 16px;
     background-position: 0 0;
   }
+  .bg-grid-light {
+    /* darker and larger dots for stronger contrast */
+    background-image: radial-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+    background-size: 22px 22px;
+    background-position: 0 0;
+  }
+  /* Ensure light grid is not visible in dark theme */
+  .dark .bg-grid-light {
+    background-image: none;
+  }
+
+  /* Justified text utility */
+  .text-justify {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+}
+
+/* Justify markdown content paragraphs */
+.prose p {
+  text-align: justify;
+  text-justify: inter-word;
 }

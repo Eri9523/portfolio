@@ -1,15 +1,17 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import AnimatedGradient from '../../components/AnimatedGradient.astro';
 const posts = (await getCollection('writeups')).filter((p) => !p.data.draft);
 const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
 <Layout title="Writeups" description="Collection of writeups.">
+  <AnimatedGradient />
   <main class="mx-auto max-w-3xl p-6">
-    <h1 class="text-3xl font-bold mb-6">Writeups</h1>
+    <h1 class="text-3xl font-bold mb-6" data-i18n="writeups.title">Writeups</h1>
     {sorted.length === 0 ? (
-      <p class="text-neutral-600 dark:text-neutral-300">No writeups published yet.</p>
+      <p class="text-neutral-600 dark:text-neutral-300" data-i18n="writeups.none">No writeups published yet.</p>
     ) : (
       <ul class="space-y-6">
         {sorted.map(({ slug, data }) => (

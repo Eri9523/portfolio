@@ -1,29 +1,64 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import AnimatedGradient from '../components/AnimatedGradient.astro';
+import WhatIDo from '../components/about/WhatIDo.astro';
+import SkillsStack from '../components/about/SkillsStack.astro';
+import ExperienceList from '../components/about/ExperienceList.astro';
+import EducationList from '../components/about/EducationList.astro';
+import NowBlock from '../components/about/NowBlock.astro';
+import { whatIDoEn, whatIDoEs } from '../data/about/whatIDo';
+import { skills } from '../data/about/skills';
+import { experienceEn, experienceEs } from '../data/about/experience';
+import { educationEn, educationEs } from '../data/about/education';
+import { nowTextEn, nowTextEs } from '../data/about/nowText';
+import { summaryTextEn, summaryTextEs } from '../data/about/summaryText';
 ---
 
-<Layout title="About" description="Personal website with writeups and projects.">
-  <main class="mx-auto max-w-3xl px-6 py-12">
-    <header class="mb-8">
-      <h1 class="text-3xl font-bold tracking-tight">About</h1>
-      <p class="text-neutral-600 dark:text-neutral-300">Hi, I'm <strong>Eri</strong>. I share writeups and personal projects here.</p>
+<Layout title="About — Eri" description="Red Teaming, DevOps, and Web3 engineering.">
+  <AnimatedGradient />
+  <main class="mx-auto max-w-4xl px-6 py-16">
+    <header class="mb-10">
+      <p class="text-sm uppercase tracking-wide text-neutral-500 dark:text-neutral-400" data-i18n="about.heading">About me</p>
+      <div class="mt-1 flex items-center gap-4">
+        <img src="/images/avatar.png" alt="Sergio Corral" class="h-16 w-16 rounded-full border border-neutral-300 object-cover dark:border-neutral-700" />
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight text-neutral-900 dark:text-white">Sergio Corral</h1>
+          <p class="text-sm text-neutral-600 dark:text-neutral-300">Red Teaming · DevOps · Web3</p>
+        </div>
+      </div>
+      <div class="mt-4 space-y-3">
+        {summaryTextEn.split(/\n\n+/).filter(Boolean).map((para, idx) => (
+          <p class="max-w-3xl text-neutral-700 dark:text-neutral-300 text-justify"
+             data-i18n-content-en={para}
+             data-i18n-content-es={summaryTextEs.split(/\n\n+/).filter(Boolean)[idx] || para}>
+            {para}
+          </p>
+        ))}
+      </div>
+      <div class="mt-6 flex flex-wrap gap-2">
+        <span class="rounded-md border border-red-600/60 px-2 py-0.5 text-xs text-red-700 dark:border-red-500/40 dark:text-red-300" data-i18n-content-en="Red Teaming" data-i18n-content-es="Red Teaming">Red Teaming</span>
+        <span class="rounded-md border border-red-600/60 px-2 py-0.5 text-xs text-red-700 dark:border-red-500/40 dark:text-red-300" data-i18n-content-en="DevOps & CI/CD" data-i18n-content-es="DevOps y CI/CD">DevOps & CI/CD</span>
+        <span class="rounded-md border border-red-600/60 px-2 py-0.5 text-xs text-red-700 dark:border-red-500/40 dark:text-red-300" data-i18n-content-en="Blockchain / Web3" data-i18n-content-es="Blockchain / Web3">Blockchain / Web3</span>
+        <span class="rounded-md border border-red-600/60 px-2 py-0.5 text-xs text-red-700 dark:border-red-500/40 dark:text-red-300" data-i18n-content-en="Automation" data-i18n-content-es="Automatización">Automation</span>
+      </div>
+      <div class="mt-6 flex gap-3">
+        <a href="/projects" class="inline-flex items-center rounded-md bg-red-600 px-5 py-2 text-white hover:bg-red-500 dark:hover:bg-red-500/90"><span data-i18n="about.viewProjects">View projects</span></a>
+        <a href="/writeups/" class="inline-flex items-center rounded-md border border-red-600 px-5 py-2 text-red-600 hover:bg-red-600/10 dark:border-red-500 dark:text-red-400"><span data-i18n="about.readWriteups">Read writeups</span></a>
+      </div>
     </header>
 
-    <article class="prose dark:prose-invert max-w-none">
-      <p>
-        This site is a simple space to document things I build and learn. You'll find
-        <a href="/writeups/">writeups</a>, notes, and small projects.
-      </p>
-      <h2>Interests</h2>
-      <ul>
-        <li>Web development and tooling</li>
-        <li>Automation and scripting</li>
-        <li>Learning in public</li>
-      </ul>
-      <h2>Links</h2>
-      <ul>
-        <li><a href="https://github.com/Eri9523">GitHub: @Eri9523</a></li>
-      </ul>
-    </article>
+    <section class="grid gap-4 sm:grid-cols-2">
+      <WhatIDo items={whatIDoEn.map((en, i) => whatIDoEs[i] ? `${en}|||${whatIDoEs[i]}` : en)} />
+      <SkillsStack skills={skills} />
+    </section>
+
+    <section class="mt-8 grid gap-4 sm:grid-cols-2">
+      <ExperienceList items={experienceEn.map((en, i) => experienceEs[i] ? `${en}|||${experienceEs[i]}` : en)} />
+      <EducationList items={educationEn.map((en, i) => educationEs[i] ? `${en}|||${educationEs[i]}` : en)} />
+    </section>
+
+    <section class="mt-8">
+      <NowBlock text={nowTextEn} textEs={nowTextEs} />
+    </section>
   </main>
 </Layout> 

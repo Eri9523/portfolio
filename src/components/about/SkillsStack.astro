@@ -1,0 +1,16 @@
+---
+export interface Props {
+  title?: string;
+  skills: string[];
+}
+const { title = 'Skills & stack', skills } = Astro.props as Props;
+---
+
+<div class="rounded-lg border border-neutral-400 bg-white/50 p-4 shadow-sm backdrop-blur dark:border-neutral-800 dark:bg-neutral-900/50">
+  <h2 class="text-sm font-semibold text-neutral-900 dark:text-white" data-i18n-content-en={title} data-i18n-content-es={title === 'Skills & stack' ? 'Habilidades y tecnologías' : title}>{title}</h2>
+  <div class="mt-2 flex flex-wrap gap-2">
+    {skills.map((s) => (
+      <span class="rounded-md border border-neutral-300 px-2 py-0.5 text-xs text-neutral-700 dark:border-neutral-800 dark:text-neutral-300">{s}</span>
+    ))}
+  </div>
+</div> 

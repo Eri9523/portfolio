@@ -1,17 +1,6 @@
 ---
 import "../styles/global.css";
-
-export interface Props {
-  title?: string;
-  description?: string;
-  image?: string;
-  noindex?: boolean;
-}
-
-const { title, description, image, noindex } = Astro.props as Props;
-const metaTitle = title ?? "Eri — Portfolio";
-const metaDescription = description ?? "Writeups and projects.";
-const canonicalUrl = Astro.url?.href;
+import i18nClientUrl from "../scripts/i18n-client.ts?url";
 ---
 
 <!doctype html>
@@ -21,16 +10,16 @@ const canonicalUrl = Astro.url?.href;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{metaTitle}</title>
-    <meta name="description" content={metaDescription} />
-    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-    <meta property="og:title" content={metaTitle} />
-    <meta property="og:description" content={metaDescription} />
+    <title>{Astro.props.title ?? "Eri — Portfolio"}</title>
+    <meta name="description" content={(Astro.props as any).description ?? "Writeups and projects."} />
+    {Astro.url?.href && <link rel="canonical" href={Astro.url.href} />}
+    <meta property="og:title" content={Astro.props.title ?? "Eri — Portfolio"} />
+    <meta property="og:description" content={(Astro.props as any).description ?? "Writeups and projects."} />
     <meta property="og:type" content="website" />
-    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
-    {image && <meta property="og:image" content={image} />}
+    {Astro.url?.href && <meta property="og:url" content={Astro.url.href} />}
+    {(Astro.props as any).image && <meta property="og:image" content={(Astro.props as any).image} />}
     <meta name="twitter:card" content="summary_large_image" />
-    {noindex && <meta name="robots" content="noindex" />}
+    {(Astro.props as any).noindex && <meta name="robots" content="noindex" />}
     <script is:inline>
       (function() {
         try {
@@ -48,35 +37,77 @@ const canonicalUrl = Astro.url?.href;
         const m = document.getElementById('mobile-menu');
         m?.classList.toggle('hidden');
       }
+      window.addEventListener('DOMContentLoaded', () => {
+        const anchors = Array.from(document.querySelectorAll('a[href]'));
+        anchors.forEach((a) => {
+          const href = a.getAttribute('href') || '';
+          const isExternal = /^https?:\/\//i.test(href);
+          if (isExternal) {
+            a.setAttribute('target', '_blank');
+            a.setAttribute('rel', 'noopener noreferrer');
+          }
+        });
+      });
     </script>
+    <script type="module" src={i18nClientUrl}></script>
   </head>
-  <body class="min-h-dvh bg-neutral-50 text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100 dark:bg-grid-dark">
-    <header class="sticky top-0 z-40 border-b border-neutral-200 bg-white/80 backdrop-blur dark:border-neutral-800 dark:bg-black/50">
-      <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <a href="/" class="font-semibold">Eri</a>
+  <body class="min-h-dvh bg-neutral-300 bg-grid-light text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100 dark:bg-grid-dark">
+    <header class="sticky top-0 z-40 border-b border-neutral-400 bg-neutral-100/90 shadow-md backdrop-blur dark:border-neutral-800 dark:bg-black/50">
+      <nav class="mx-auto flex max-w-6xl items-center justify-between px-3 py-3">
+        <a href="/" class="flex items-center"><img src="/images/avatar.png" alt="Eri" class="h-7 w-7 rounded-full border border-neutral-300 dark:border-neutral-700" /><span class="sr-only">Eri</span></a>
         <div class="hidden items-center gap-2 md:flex">
-          <a href="/writeups/" class="rounded-md px-3 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900">Writeups</a>
-          <a href="/about" class="rounded-md px-3 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900">About</a>
-          <a href="https://github.com/Eri9523" class="rounded-md px-3 py-1 text-sm text-red-600 hover:underline dark:text-red-400">GitHub</a>
+          <a href="/projects" class="rounded-md px-3 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900"><span data-i18n="nav.projects">Projects</span></a>
+          <a href="/writeups/" class="rounded-md px-3 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900"><span data-i18n="nav.writeups">Writeups</span></a>
+          <a href="/about" class="rounded-md px-3 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900"><span data-i18n="nav.about">About</span></a>
+          <div class="ml-1 flex items-center gap-2">
+            <a href="https://github.com/Eri9523" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="inline-flex items-center rounded-md p-1 text-red-600 hover:bg-neutral-100 dark:text-red-400 dark:hover:bg-neutral-900">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.427 2.865 8.184 6.839 9.504 .5 .092 .682-.217 .682-.483 0-.237-.009-.868-.013-1.703-2.782 .605-3.369-1.342-3.369-1.342-.454-1.158-1.11-1.467-1.11-1.467-.908-.62 .069-.608 .069-.608 1.004 .07 1.532 1.032 1.532 1.032 .892 1.53 2.341 1.088 2.91 .833 .091-.647 .35-1.088 .636-1.338-2.221-.253-4.555-1.113-4.555-4.951 0-1.093 .39-1.988 1.029-2.688-.103-.253-.446-1.272 .098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c .851 .004 1.706 .115 2.505 .337 1.909-1.296 2.748-1.026 2.748-1.026 .546 1.378 .202 2.397 .1 2.65 .64 .7 1.028 1.595 1.028 2.688 0 3.848-2.338 4.695-4.566 4.943 .359 .31 .678 .92 .678 1.855 0 1.338-.012 2.419-.012 2.749 0 .268 .18 .58 .688 .482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.523 2 12 2Z" clip-rule="evenodd"/>
+              </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/sergiocorral-dev" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="inline-flex items-center rounded-md p-1 text-red-600 hover:bg-neutral-100 dark:text-red-400 dark:hover:bg-neutral-900">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.329-.027-3.039-1.852-3.039-1.853 0-2.136 1.447-2.136 2.944v5.664H9.35V9h3.414v1.561h .049c .476-.9 1.637-1.852 3.369-1.852 3.604 0 4.27 2.372 4.27 5.458v6.285zM5.337 7.433a2.064 2.064 0 1 1 0-4.128 2.064 2.064 0 0 1 0 4.128zM7.114 20.452H3.56V9h3.554v11.452z"/>
+              </svg>
+            </a>
+          </div>
+          <div class="ml-2 flex items-center gap-1">
+            <button type="button" data-locale-btn="en" class="inline-flex items-center rounded-md border px-2 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900" aria-label="Switch to English">🇬🇧</button>
+            <button type="button" data-locale-btn="es" class="inline-flex items-center rounded-md border px-2 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900" aria-label="Cambiar a Español">🇪🇸</button>
+          </div>
           <button type="button" onclick="window.toggleTheme()" class="ml-2 inline-flex items-center rounded-md border px-2 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900">
             <span class="inline dark:hidden">🌙</span>
             <span class="hidden dark:inline">☀️</span>
           </button>
         </div>
-        <button type="button" onclick="window.toggleMenu()" class="md:hidden inline-flex items-center rounded-md border px-2 py-1 text-sm">
-          ☰
-        </button>
+        <div class="md:hidden ml-auto flex items-center gap-2">
+          <button type="button" data-locale-btn="en" class="inline-flex items-center rounded-md border px-2 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900" aria-label="Switch to English">🇬🇧</button>
+          <button type="button" data-locale-btn="es" class="inline-flex items-center rounded-md border px-2 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900" aria-label="Cambiar a Español">🇪🇸</button>
+          <button type="button" onclick="window.toggleTheme()" class="inline-flex items-center rounded-md border px-2 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900 ml-2">
+            <span class="inline dark:hidden">🌙</span>
+            <span class="hidden dark:inline">☀️</span>
+          </button>
+          <button type="button" onclick="window.toggleMenu()" class="inline-flex items-center rounded-md border px-2 py-1 text-sm">
+            ☰
+          </button>
+        </div>
       </nav>
       <div id="mobile-menu" class="mx-auto hidden max-w-6xl px-4 pb-3 md:hidden">
         <div class="flex flex-col gap-2">
-          <a href="/writeups/" class="rounded-md px-3 py-2 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900">Writeups</a>
-          <a href="/about" class="rounded-md px-3 py-2 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900">About</a>
-          <div class="flex items-center gap-2">
-            <a href="https://github.com/Eri9523" class="rounded-md px-3 py-2 text-sm text-red-600 hover:underline dark:text-red-400">GitHub</a>
-            <button type="button" onclick="window.toggleTheme()" class="inline-flex items-center rounded-md border px-2 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900">
-              <span class="inline dark:hidden">🌙</span>
-              <span class="hidden dark:inline">☀️</span>
-            </button>
+          <a href="/projects" class="rounded-md px-3 py-2 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900"><span data-i18n="nav.projects">Projects</span></a>
+          <a href="/writeups/" class="rounded-md px-3 py-2 text-sm hover:bg-neutral-100 dark:hoverbg-neutral-900"><span data-i18n="nav.writeups">Writeups</span></a>
+          <a href="/about" class="rounded-md px-3 py-2 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900"><span data-i18n="nav.about">About</span></a>
+          <div class="flex items-center gap-3 pt-1">
+            <a href="https://github.com/Eri9523" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="inline-flex items-center rounded-md p-2 text-red-600 hover:bg-neutral-100 dark:text-red-400 dark:hover:bg-neutral-900">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.427 2.865 8.184 6.839 9.504 .5 .092 .682-.217 .682-.483 0-.237-.009-.868-.013-1.703-2.782 .605-3.369-1.342-3.369-1.342-.454-1.158-1.11-1.467-1.11-1.467-.908-.62 .069-.608 .069-.608 1.004 .07 1.532 1.032 1.532 1.032 .892 1.53 2.341 1.088 2.91 .833 .091-.647 .35-1.088 .636-1.338-2.221-.253-4.555-1.113-4.555-4.951 0-1.093 .39-1.988 1.029-2.688-.103-.253-.446-1.272 .098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c .851 .004 1.706 .115 2.505 .337 1.909-1.296 2.748-1.026 2.748-1.026 .546 1.378 .202 2.397 .1 2.65 .64 .7 1.028 1.595 1.028 2.688 0 3.848-2.338 4.695-4.566 4.943 .359 .31 .678 .92 .678 1.855 0 1.338-.012 2.419-.012 2.749 0 .268 .18 .58 .688 .482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.523 2 12 2Z" clip-rule="evenodd"/>
+              </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/your-handle" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="inline-flex items-center rounded-md p-2 text-red-600 hover:bg-neutral-100 dark:text-red-400 dark:hover:bg-neutral-900">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.329-.027-3.039-1.852-3.039-1.853 0-2.136 1.447-2.136 2.944v5.664H9.35V9h3.414v1.561h .049c .476-.9 1.637-1.852 3.369-1.852 3.604 0 4.27 2.372 4.27 5.458v6.285zM5.337 7.433a2.064 2.064 0 1 1 0-4.128 2.064 2.064 0 0 1 0 4.128zM7.114 20.452H3.56V9h3.554v11.452z"/>
+              </svg>
+            </a>
           </div>
         </div>
       </div>
@@ -90,6 +121,6 @@ const canonicalUrl = Astro.url?.href;
   body {
     margin: 0;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
   }
 </style>

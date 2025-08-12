@@ -8,14 +8,47 @@ interface Props {
 const { phrases, typingSpeed = 80, deletingSpeed = 40, pauseMs = 1200 } = Astro.props as Props;
 ---
 
-<span id="tw" class="whitespace-pre"></span>
+<span class="tw-wrap"><span class="tw inline-block max-w-full whitespace-pre-wrap break-words after:inline-block after:w-[1ch] after:border-r-2 after:border-red-500 after:animate-pulse" aria-live="polite" data-phrases={JSON.stringify(phrases)} data-typing={typingSpeed} data-deleting={deletingSpeed} data-pause={pauseMs}></span></span>
 
 <script is:inline>
-  const el = document.getElementById('tw');
+  const wrap = document.currentScript.previousElementSibling;
+  const el = wrap.querySelector('.tw');
   const phrases = JSON.parse(el.getAttribute('data-phrases'));
   const typingSpeed = Number(el.getAttribute('data-typing'));
   const deletingSpeed = Number(el.getAttribute('data-deleting'));
   const pauseMs = Number(el.getAttribute('data-pause'));
+
+  // Measure tallest phrase to reserve space and avoid layout shift
+  const measureEl = document.createElement('div');
+  measureEl.className = 'tw-measure';
+  wrap.appendChild(measureEl);
+
+  function computeMinHeight() {
+    // match width of the wrapper to get consistent wrapping
+    const parentBlock = wrap.closest('h1') || wrap.parentElement || document.body;
+    const width = Math.floor(parentBlock.getBoundingClientRect().width);
+    measureEl.style.width = (width > 0 ? width : window.innerWidth) + 'px';
+    let maxH = 0;
+    for (const p of phrases) {
+      measureEl.textContent = p;
+      const h = measureEl.scrollHeight;
+      if (h > maxH) maxH = h;
+    }
+    wrap.style.minHeight = Math.ceil(maxH + 2) + 'px';
+    measureEl.textContent = '';
+  }
+
+  // initial measure
+  computeMinHeight();
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => computeMinHeight()).catch(() => {});
+  }
+  // re-measure on resize (throttled)
+  let rzT;
+  window.addEventListener('resize', () => {
+    clearTimeout(rzT);
+    rzT = setTimeout(computeMinHeight, 150);
+  });
 
   let i = 0;
   let text = '';
@@ -44,13 +77,27 @@ const { phrases, typingSpeed = 80, deletingSpeed = 40, pauseMs = 1200 } = Astro.
   setTimeout(tick, 400);
 </script>
 
-<!-- data attributes to pass props to inline script -->
-<script is:inline>
-  (function init(){
-    const el = document.getElementById('tw');
-    el.setAttribute('data-phrases', JSON.stringify(/** @type {string[]} */ (Astro.props.phrases)));
-    el.setAttribute('data-typing', String(Astro.props.typingSpeed ?? 80));
-    el.setAttribute('data-deleting', String(Astro.props.deletingSpeed ?? 40));
-    el.setAttribute('data-pause', String(Astro.props.pauseMs ?? 1200));
-  })();
-</script> 
+<style>
+  .tw-wrap {
+    display: inline-block;
+    width: 100%;
+  }
+  .tw { 
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .tw-measure {
+    position: absolute;
+    visibility: hidden;
+    pointer-events: none;
+    left: -9999px;
+    top: 0;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+    line-height: inherit;
+    font: inherit;
+  }
+</style>
+
