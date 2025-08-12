@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getEntryBySlug, getCollection } from 'astro:content';
+import { getCollection } from 'astro:content';
 import AnimatedGradient from '../../components/AnimatedGradient.astro';
 
 export async function getStaticPaths() {
@@ -9,22 +9,25 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-const entry = slug ? await getEntryBySlug('writeups', slug) : undefined;
-if (!entry) {
-  return Astro.redirect('/writeups');
-}
-const { Content } = await entry.render();
-const { data } = entry;
+const posts = await getCollection('writeups');
+const entry = posts.find((p) => p.slug === slug);
+const shouldRedirect = !entry;
+const { Content } = entry ? await entry.render() : { Content: undefined } as any;
+const data = entry ? entry.data : {} as any;
 ---
 
-<Layout title={data.title} description={data.summary} image={data.cover}>
-  <AnimatedGradient />
-  <main class="mx-auto max-w-3xl p-6">
-    <a class="text-red-600 hover:underline dark:text-red-400" href="/writeups/" data-i18n="writeup.back">← Back</a>
-    <h1 class="mt-2 border-b border-red-200 pb-2 text-3xl font-bold dark:border-red-900/50">{data.title}</h1>
-    <div class="text-sm text-neutral-500 mb-6">{data.date.toISOString().slice(0, 10)}</div>
-    <article class="prose dark:prose-invert max-w-none">
-      <Content />
-    </article>
-  </main>
-</Layout> 
+{shouldRedirect ? (
+  <meta http-equiv="refresh" content={`0; url=${import.meta.env.BASE_URL}writeups/`} />
+) : (
+  <Layout title={data.title} description={data.summary} image={data.cover}>
+    <AnimatedGradient />
+    <main class="mx-auto max-w-3xl p-6">
+      <a class="text-red-600 hover:underline dark:text-red-400" href={`${import.meta.env.BASE_URL}writeups/`} data-i18n="writeup.back">← Back</a>
+      <h1 class="mt-2 border-b border-red-200 pb-2 text-3xl font-bold dark:border-red-900/50">{data.title}</h1>
+      <div class="text-sm text-neutral-500 mb-6">{data.date.toISOString().slice(0, 10)}</div>
+      <article class="prose dark:prose-invert max-w-none">
+        <Content />
+      </article>
+    </main>
+  </Layout>
+)} 
