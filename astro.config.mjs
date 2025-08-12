@@ -8,16 +8,18 @@ const rawBase = process.env.PUBLIC_BASE;
 
 // Intenta inferir base y site si estamos en GitHub Actions (GitHub Pages)
 const [ghOwner, ghRepo] = (process.env.GITHUB_REPOSITORY || '').split('/');
-const inferredBase = ghRepo ? `/${ghRepo}` : '/';
+const inferredBase = ghRepo ? `/${ghRepo}/` : '/';
 
 /**
- * Normaliza el valor de base para que siempre empiece con '/'
+ * Normaliza el valor de base para que siempre empiece y termine con '/'
  * @param {string | undefined} value
  * @returns {string}
  */
 function normalizeBase(value) {
   if (!value) return '/';
-  return value.startsWith('/') ? value : `/${value}`;
+  let v = value.startsWith('/') ? value : `/${value}`;
+  if (v !== '/' && !v.endsWith('/')) v = `${v}/`;
+  return v;
 }
 
 const base = normalizeBase(rawBase || inferredBase);
