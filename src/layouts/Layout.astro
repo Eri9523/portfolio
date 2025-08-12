@@ -10,12 +10,12 @@ export interface Props {
 
 const { title, description, image, noindex } = Astro.props as Props;
 const metaTitle = title ?? "Eri — Portfolio";
-const metaDescription = description ?? "Writeups y proyectos de seguridad.";
+const metaDescription = description ?? "Writeups and projects.";
 const canonicalUrl = Astro.url?.href;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -52,8 +52,8 @@ const canonicalUrl = Astro.url?.href;
   <body class="min-h-dvh bg-neutral-50 text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100">
     <div class="fixed right-4 top-4 z-50">
       <button type="button" onclick="window.toggleTheme()" class="rounded-md border px-3 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900">
-        <span class="inline dark:hidden">🌙 Modo oscuro</span>
-        <span class="hidden dark:inline">☀️ Modo claro</span>
+        <span class="inline dark:hidden">🌙 Dark mode</span>
+        <span class="hidden dark:inline">☀️ Light mode</span>
       </button>
     </div>
     <slot />

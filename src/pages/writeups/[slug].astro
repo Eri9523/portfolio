@@ -18,7 +18,7 @@ const { data } = entry;
 
 <Layout title={data.title} description={data.summary} image={data.cover}>
   <main class="mx-auto max-w-3xl p-6">
-    <a class="text-blue-600 hover:underline" href="/writeups/">← Volver</a>
+    <a class="text-blue-600 hover:underline" href="/writeups/">← Back</a>
     <h1 class="text-3xl font-bold mt-2">{data.title}</h1>
     <div class="text-sm text-neutral-500 mb-6">{data.date.toISOString().slice(0, 10)}</div>
     <article class="prose dark:prose-invert max-w-none">

@@ -9,22 +9,22 @@ const posts = all
   .slice(0, 5);
 ---
 
-<Layout title="Eri — Pentesting & Seguridad" description="Writeups, investigación y proyectos de seguridad ofensiva.">
+<Layout title="Eri — Portfolio" description="Writeups and projects.">
   <main class="mx-auto max-w-4xl px-6 py-12">
     <header class="mb-10">
-      <h1 class="text-4xl font-bold tracking-tight">Eri — Pentesting & Seguridad</h1>
-      <p class="mt-2 text-neutral-600 dark:text-neutral-300">Writeups, investigación y proyectos de seguridad ofensiva.</p>
+      <h1 class="text-4xl font-bold tracking-tight">Eri</h1>
+      <p class="mt-2 text-neutral-600 dark:text-neutral-300">Writeups and personal projects.</p>
       <div class="mt-6 flex gap-3">
-        <a href="/writeups/" class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-500">Ver Writeups</a>
-        <a href="/about" class="inline-flex items-center rounded-md border px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-900">Sobre mí</a>
+        <a href="/writeups/" class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-500">View writeups</a>
+        <a href="/about" class="inline-flex items-center rounded-md border px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-900">About</a>
         <a href="https://github.com/Eri9523" class="inline-flex items-center rounded-md border px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-900">GitHub</a>
       </div>
     </header>
 
     <section class="space-y-4">
-      <h2 class="text-2xl font-semibold">Últimos writeups</h2>
+      <h2 class="text-2xl font-semibold">Latest writeups</h2>
       {posts.length === 0 ? (
-        <p class="text-neutral-600 dark:text-neutral-300">Pronto habrá contenido.</p>
+        <p class="text-neutral-600 dark:text-neutral-300">Content coming soon.</p>
       ) : (
         <ul class="divide-y divide-neutral-200 dark:divide-neutral-800 rounded-md border border-neutral-200 dark:border-neutral-800">
           {posts.map(({ slug, data }) => (
