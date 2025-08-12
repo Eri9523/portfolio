@@ -5,7 +5,7 @@ const posts = (await getCollection('writeups')).filter((p) => !p.data.draft);
 const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
-<Layout>
+<Layout title="Writeups" description="Listado de writeups de pentesting y seguridad.">
   <main class="mx-auto max-w-3xl p-6">
     <h1 class="text-3xl font-bold mb-6">Writeups</h1>
     {sorted.length === 0 ? (

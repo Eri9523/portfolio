@@ -16,7 +16,7 @@ const { Content } = await entry.render();
 const { data } = entry;
 ---
 
-<Layout>
+<Layout title={data.title} description={data.summary} image={data.cover}>
   <main class="mx-auto max-w-3xl p-6">
     <a class="text-blue-600 hover:underline" href="/writeups/">← Volver</a>
     <h1 class="text-3xl font-bold mt-2">{data.title}</h1>
