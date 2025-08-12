@@ -1,0 +1,56 @@
+---
+interface Props {
+  phrases: string[];
+  typingSpeed?: number;
+  deletingSpeed?: number;
+  pauseMs?: number;
+}
+const { phrases, typingSpeed = 80, deletingSpeed = 40, pauseMs = 1200 } = Astro.props as Props;
+---
+
+<span id="tw" class="whitespace-pre"></span>
+
+<script is:inline>
+  const el = document.getElementById('tw');
+  const phrases = JSON.parse(el.getAttribute('data-phrases'));
+  const typingSpeed = Number(el.getAttribute('data-typing'));
+  const deletingSpeed = Number(el.getAttribute('data-deleting'));
+  const pauseMs = Number(el.getAttribute('data-pause'));
+
+  let i = 0;
+  let text = '';
+  let deleting = false;
+
+  function tick() {
+    const phrase = phrases[i % phrases.length];
+    if (deleting) {
+      text = phrase.slice(0, text.length - 1);
+    } else {
+      text = phrase.slice(0, text.length + 1);
+    }
+    el.textContent = text;
+
+    if (!deleting && text === phrase) {
+      deleting = true;
+      setTimeout(tick, pauseMs);
+      return;
+    }
+    if (deleting && text === '') {
+      deleting = false;
+      i++;
+    }
+    setTimeout(tick, deleting ? deletingSpeed : typingSpeed);
+  }
+  setTimeout(tick, 400);
+</script>
+
+<!-- data attributes to pass props to inline script -->
+<script is:inline>
+  (function init(){
+    const el = document.getElementById('tw');
+    el.setAttribute('data-phrases', JSON.stringify(/** @type {string[]} */ (Astro.props.phrases)));
+    el.setAttribute('data-typing', String(Astro.props.typingSpeed ?? 80));
+    el.setAttribute('data-deleting', String(Astro.props.deletingSpeed ?? 40));
+    el.setAttribute('data-pause', String(Astro.props.pauseMs ?? 1200));
+  })();
+</script> 
