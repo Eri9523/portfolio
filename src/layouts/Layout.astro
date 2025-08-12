@@ -1,6 +1,5 @@
 ---
 import "../styles/global.css";
-import i18nClientUrl from "../scripts/i18n-client.ts?url";
 ---
 
 <!doctype html>
@@ -49,7 +48,137 @@ import i18nClientUrl from "../scripts/i18n-client.ts?url";
         });
       });
     </script>
-    <script type="module" src={i18nClientUrl}></script>
+    <script is:inline>
+      // i18n translations
+      const translations = {
+        en: {
+          'nav.projects': 'Projects',
+          'nav.writeups': 'Writeups',
+          'nav.about': 'About',
+          'home.greeting': 'Hi, there I\'m',
+          'home.titleStatic': 'Security Engineer',
+          'home.subtitle1': 'Red Teaming and DevOps',
+          'home.subtitle2': 'Strong background in Blockchain and Python development.',
+          'home.btnWriteups': 'View writeups',
+          'home.btnAbout': 'About',
+          'home.certsTitle': 'Certificates',
+          'home.viewAllCerts': 'View all certificates',
+          'home.featuredTitle': 'Featured projects',
+          'home.viewAllProjects': 'View all projects',
+          'home.latestWriteups': 'Latest writeups',
+          'home.comingSoon': 'Content coming soon.',
+          'about.viewProjects': 'View projects',
+          'about.readWriteups': 'Read writeups',
+          'writeup.back': '← Back'
+        },
+        es: {
+          'nav.projects': 'Proyectos',
+          'nav.writeups': 'Artículos',
+          'nav.about': 'Sobre mí',
+          'home.greeting': 'Hola, soy',
+          'home.titleStatic': 'Ingeniero de Seguridad',
+          'home.subtitle1': 'Red Teaming y DevOps',
+          'home.subtitle2': 'Fuerte experiencia en desarrollo Blockchain y Python.',
+          'home.btnWriteups': 'Ver artículos',
+          'home.btnAbout': 'Sobre mí',
+          'home.certsTitle': 'Certificados',
+          'home.viewAllCerts': 'Ver todos los certificados',
+          'home.featuredTitle': 'Proyectos destacados',
+          'home.viewAllProjects': 'Ver todos los proyectos',
+          'home.latestWriteups': 'Últimos artículos',
+          'home.comingSoon': 'Contenido próximamente.',
+          'about.viewProjects': 'Ver proyectos',
+          'about.readWriteups': 'Leer artículos',
+          'writeup.back': '← Volver'
+        }
+      };
+
+      function getInitialLocale() {
+        try {
+          const stored = localStorage.getItem('locale');
+          if (stored === 'en' || stored === 'es') return stored;
+        } catch {}
+        return 'en';
+      }
+
+      function setLocale(locale) {
+        try { localStorage.setItem('locale', locale); } catch {}
+        document.documentElement.setAttribute('lang', locale);
+        applyTranslations(locale);
+      }
+
+      function t(locale, key) {
+        const dict = translations[locale];
+        return dict && dict[key] ? dict[key] : key;
+      }
+
+      function applyTranslations(locale) {
+        const dict = translations[locale];
+        if (!dict) return;
+        
+        // Apply regular translations
+        const nodes = document.querySelectorAll('[data-i18n]');
+        nodes.forEach((el) => {
+          const key = el.dataset.i18n || '';
+          if (!key) return;
+          const text = t(locale, key);
+          if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) {
+            if (el.placeholder !== undefined) el.placeholder = text;
+          } else {
+            el.textContent = text;
+          }
+        });
+
+        // Apply inline content translations
+        const attr = locale === 'es' ? 'i18nContentEs' : 'i18nContentEn';
+        const inlineNodes = document.querySelectorAll('[data-i18n-content-en], [data-i18n-content-es]');
+        inlineNodes.forEach((el) => {
+          const value = el.dataset[attr];
+          if (typeof value === 'string') {
+            if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) {
+              if (el.placeholder !== undefined) el.placeholder = value;
+            } else {
+              el.textContent = value;
+            }
+          }
+        });
+      }
+
+      function updateFlagButtons(locale) {
+        const buttons = document.querySelectorAll('[data-locale-btn]');
+        buttons.forEach((btn) => {
+          const loc = (btn.getAttribute('data-locale-btn') || '').toLowerCase();
+          const isCurrent = loc === locale;
+          btn.style.display = isCurrent ? 'none' : 'inline-flex';
+          btn.setAttribute('aria-pressed', String(isCurrent));
+        });
+      }
+
+      function initI18n() {
+        const locale = getInitialLocale();
+        document.documentElement.setAttribute('lang', locale);
+        applyTranslations(locale);
+        updateFlagButtons(locale);
+
+        const buttons = document.querySelectorAll('[data-locale-btn]');
+        buttons.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const loc = (btn.getAttribute('data-locale-btn') || '').toLowerCase();
+            if (loc === 'en' || loc === 'es') {
+              setLocale(loc);
+              applyTranslations(loc);
+              updateFlagButtons(loc);
+            }
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initI18n);
+      } else {
+        initI18n();
+      }
+    </script>
   </head>
   <body class="min-h-dvh bg-neutral-300 bg-grid-light text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100 dark:bg-grid-dark">
     <header class="sticky top-0 z-40 border-b border-neutral-400 bg-neutral-100/90 shadow-md backdrop-blur dark:border-neutral-800 dark:bg-black/50">
