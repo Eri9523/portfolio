@@ -1,0 +1,31 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('writeups')).filter((p) => !p.data.draft);
+const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Layout>
+  <main class="mx-auto max-w-3xl p-6">
+    <h1 class="text-3xl font-bold mb-6">Writeups</h1>
+    {sorted.length === 0 ? (
+      <p class="text-neutral-600 dark:text-neutral-300">Aún no hay writeups publicados.</p>
+    ) : (
+      <ul class="space-y-6">
+        {sorted.map(({ slug, data }) => (
+          <li class="group">
+            <a class="block" href={`/writeups/${slug}/`}>
+              <h2 class="text-xl font-semibold group-hover:underline">{data.title}</h2>
+              <div class="text-sm text-neutral-500">
+                {data.date.toISOString().slice(0, 10)}{data.tags ? ` · ${data.tags.join(', ')}` : ''}
+              </div>
+              {data.summary && (
+                <p class="mt-2 text-neutral-700 dark:text-neutral-300">{data.summary}</p>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </main>
+</Layout> 
