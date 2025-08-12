@@ -32,16 +32,13 @@ const canonicalUrl = Astro.url?.href;
     <meta name="twitter:card" content="summary_large_image" />
     {noindex && <meta name="robots" content="noindex" />}
     <script is:inline>
-      // Inicializa tema antes del render para evitar FOUC
       (function() {
         try {
           const stored = localStorage.getItem('theme');
           const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
           const enableDark = stored === 'dark' || (!stored && prefersDark);
           document.documentElement.classList.toggle('dark', enableDark);
-        } catch (e) {
-          // noop
-        }
+        } catch (e) {}
       })();
       window.toggleTheme = function() {
         const isDark = document.documentElement.classList.toggle('dark');
@@ -49,13 +46,21 @@ const canonicalUrl = Astro.url?.href;
       }
     </script>
   </head>
-  <body class="min-h-dvh bg-neutral-50 text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100">
-    <div class="fixed right-4 top-4 z-50">
-      <button type="button" onclick="window.toggleTheme()" class="rounded-md border px-3 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900">
-        <span class="inline dark:hidden">🌙 Dark mode</span>
-        <span class="hidden dark:inline">☀️ Light mode</span>
-      </button>
-    </div>
+  <body class="min-h-dvh bg-neutral-50 text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100 dark:bg-grid-dark">
+    <header class="sticky top-0 z-40 border-b border-neutral-200 bg-white/80 backdrop-blur dark:border-neutral-800 dark:bg-black/50">
+      <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <a href="/" class="font-semibold">Eri</a>
+        <div class="flex items-center gap-2">
+          <a href="/writeups/" class="rounded-md px-3 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900">Writeups</a>
+          <a href="/about" class="rounded-md px-3 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900">About</a>
+          <a href="https://github.com/Eri9523" class="rounded-md px-3 py-1 text-sm text-red-600 hover:underline dark:text-red-400">GitHub</a>
+          <button type="button" onclick="window.toggleTheme()" class="ml-2 inline-flex items-center rounded-md border px-2 py-1 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900">
+            <span class="inline dark:hidden">🌙</span>
+            <span class="hidden dark:inline">☀️</span>
+          </button>
+        </div>
+      </nav>
+    </header>
     <slot />
   </body>
 </html>

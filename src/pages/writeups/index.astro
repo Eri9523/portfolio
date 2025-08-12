@@ -15,7 +15,7 @@ const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime(
         {sorted.map(({ slug, data }) => (
           <li class="group">
             <a class="block" href={`/writeups/${slug}/`}>
-              <h2 class="text-xl font-semibold group-hover:underline">{data.title}</h2>
+              <h2 class="text-xl font-semibold group-hover:text-red-600 dark:group-hover:text-red-400">{data.title}</h2>
               <div class="text-sm text-neutral-500">
                 {data.date.toISOString().slice(0, 10)}{data.tags ? ` · ${data.tags.join(', ')}` : ''}
               </div>
