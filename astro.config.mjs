@@ -34,5 +34,15 @@ export default defineConfig({
   base,
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      // Force cache busting
+      rollupOptions: {
+        output: {
+          entryFileNames: `[name]-${process.env.BUILD_TIME || Date.now()}.js`,
+          chunkFileNames: `[name]-${process.env.BUILD_TIME || Date.now()}.js`,
+          assetFileNames: `[name]-${process.env.BUILD_TIME || Date.now()}[extname]`
+        }
+      }
+    },
   },
 });
