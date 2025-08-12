@@ -1,2 +1,16 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+/* Activa modo oscuro por clase `.dark` */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Tokens de tema (Tailwind v4) */
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter,
+    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+
+  /* Color de marca reutilizable */
+  --color-brand: var(--color-sky-600);
+  --color-brand-foreground: white;
+}
