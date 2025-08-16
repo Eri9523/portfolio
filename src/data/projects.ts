@@ -36,7 +36,7 @@ export const projects: Project[] = [
     repo: "",
     featured: true,
     private: true,
-  },
+  }, 
   {
     title: "AI Hacker - Automated Pentesting System",
     titleEs: "IA Hacker - Sistema de Pentesting Automatizado",

@@ -7,7 +7,7 @@ import ExperienceList from '../components/about/ExperienceList.astro';
 import EducationList from '../components/about/EducationList.astro';
 import NowBlock from '../components/about/NowBlock.astro';
 import { whatIDoEn, whatIDoEs } from '../data/about/whatIDo';
-import { skills } from '../data/about/skills';
+import { hardSkills, softSkills } from '../data/about/skills';
 import { experienceEn, experienceEs } from '../data/about/experience';
 import { educationEn, educationEs } from '../data/about/education';
 import { nowTextEn, nowTextEs } from '../data/about/nowText';
@@ -49,8 +49,12 @@ import { summaryTextEn, summaryTextEs } from '../data/about/summaryText';
     </header>
 
     <section class="grid gap-4 sm:grid-cols-2">
+      <SkillsStack title="Hard Skills" skills={hardSkills} />
+      <SkillsStack title="Soft Skills" skills={softSkills} />
+    </section>
+
+    <section class="mt-8">
       <WhatIDo items={whatIDoEn.map((en, i) => whatIDoEs[i] ? `${en}|||${whatIDoEs[i]}` : en)} />
-      <SkillsStack skills={skills} />
     </section>
 
     <section class="mt-8 grid gap-4 sm:grid-cols-2">
