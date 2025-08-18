@@ -10,6 +10,8 @@ export const hardSkills: string[] = [
   'Automation',
   'Jenkins',
   'AWS',
+  'Azure',
+  'Google Cloud',
   'Monitoring',
   'Logging',
   'Shell Scripting',
