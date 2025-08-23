@@ -8,6 +8,7 @@ export type Certificate = {
 export const certificates: Certificate[] = [
   // Add your certificates here. Examples:
   // { title: "eJPT", issuer: "INE", date: "2023-06", href: "" },
+  { title: "Docker Trainning Course", issuer: "Kodekloud", date: "2025-08", href: "https://learn.kodekloud.com/user/certificate/6b6d0c8f-8fb6-47cb-8021-f07f90100f22" },
   { title: "DevSecOps Certificate", issuer: "TryHackMe", date: "2025-08", href: "https://tryhackme.com/certificate/THM-ZO7SIIOPPD" },
   { title: "Jr Penetration Tester", issuer: "TryHackMe", date: "2025-08", href: "https://tryhackme.com/certificate/THM-IY36HJQCSJ" },
   { title: "Cyber Security 101 Certificate", issuer: "TryHackMe", date: "2025-07", href: "https://tryhackme.com/certificate/THM-WVLWPABIQ7" },
